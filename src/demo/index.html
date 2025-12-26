@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intent CSS - Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      padding: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+    
+    .description {
+      color: #666;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    
+    .demo-section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .demo-section h2 {
+      color: #333;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    
+    .demo-box {
+      padding: 1rem;
+      background: white;
+      border-radius: 4px;
+      margin: 1rem 0;
+      border: 2px solid #e0e0e0;
+    }
+    
+    .controls {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .control-group {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    label {
+      font-weight: 600;
+      color: #555;
+      min-width: 100px;
+    }
+    
+    input[type="text"],
+    input[type="color"] {
+      padding: 0.5rem;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    
+    button {
+      padding: 0.75rem 1.5rem;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    button:hover {
+      background: #5568d3;
+    }
+    
+    code {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 1rem;
+      border-radius: 4px;
+      display: block;
+      font-family: 'Courier New', monospace;
+      overflow-x: auto;
+      margin-top: 1rem;
+    }
+    
+    .success {
+      color: #22c55e;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Intent CSS Demo</h1>
+    <p class="description">
+      This is a demonstration page for testing the intent-css package. 
+      Below are interactive examples showing the package's functionality.
+    </p>
+    
+    <div class="demo-section">
+      <h2>Style Builder Demo</h2>
+      <div class="controls">
+        <div class="control-group">
+          <label for="color">Color:</label>
+          <input type="color" id="color" value="#667eea">
+        </div>
+        <div class="control-group">
+          <label for="fontSize">Font Size:</label>
+          <input type="text" id="fontSize" value="16px" placeholder="e.g., 16px">
+        </div>
+        <div class="control-group">
+          <label for="padding">Padding:</label>
+          <input type="text" id="padding" value="1rem" placeholder="e.g., 1rem">
+        </div>
+        <div class="control-group">
+          <label for="margin">Margin:</label>
+          <input type="text" id="margin" value="0.5rem" placeholder="e.g., 0.5rem">
+        </div>
+        <button id="applyStyles">Apply Styles</button>
+      </div>
+      
+      <div id="styledBox" class="demo-box">
+        This box's styles are controlled by the StyleBuilder
+      </div>
+      
+      <code id="generatedCode">// Generated CSS will appear here</code>
+    </div>
+    
+    <div class="demo-section">
+      <h2>Class Name Generator Demo</h2>
+      <div class="controls">
+        <div class="control-group">
+          <label for="prefix">Prefix:</label>
+          <input type="text" id="prefix" value="button" placeholder="e.g., button">
+        </div>
+        <div class="control-group">
+          <label for="suffix">Suffix:</label>
+          <input type="text" id="suffix" value="primary" placeholder="e.g., primary">
+        </div>
+        <button id="generateClass">Generate Class Name</button>
+      </div>
+      
+      <code id="classOutput">// Generated class name will appear here</code>
+    </div>
+    
+    <div class="demo-section">
+      <h2>Import Instructions</h2>
+      <p style="margin-bottom: 1rem;">You can import this package in your project:</p>
+      <code>// ES Module
+import { createStyle, StyleBuilder, generateClassName } from 'intent-css';
+
+// CommonJS
+const { createStyle, StyleBuilder, generateClassName } = require('intent-css');</code>
+    </div>
+    
+    <p class="success" style="text-align: center; margin-top: 2rem;">
+      ✨ Package is working correctly!
+    </p>
+  </div>
+  
+  <script type="module" src="/main.ts"></script>
+</body>
+</html>
