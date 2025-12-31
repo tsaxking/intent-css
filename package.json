@@ -2,7 +2,8 @@
 	"scripts": {
 		"build": "tsc && tsc -p tsconfig.commonjs.json && node ./scripts/post-build.js",
 		"install": "pnpm build",
-		"test": "vitest"
+		"test": "vitest",
+		"dev": "vite"
 	},
 	"devDependencies": {
 		"@types/node": "^25.0.3",
@@ -18,7 +19,7 @@
 		"css-tree": "^3.1.0",
 		"tinycolor2": "^1.6.0",
 		"ts-utils": "github:tsaxking/global-ts-utilities#v1.0.9",
-		"colors": "github:tsaxking/colors#v2.0.0"
+		"colors": "github:tsaxking/colors#v2.0.1"
 	},
 	"exports": {
 		".": {

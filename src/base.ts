@@ -1,4 +1,4 @@
-// import { IntentEngine } from './engine.js';
+import { IntentEngine } from './engine.js';
 import { type Globals } from './globals.js';
 
 export type BaseCssConfig<G extends Globals> = {
@@ -11,7 +11,7 @@ export type BaseCssConfig<G extends Globals> = {
 };
 
 export const genBaseCss = <G extends Globals>(
-//   engine: IntentEngine<G>,
+  engine: IntentEngine<G>,
   config: BaseCssConfig<G> = {}
 ) => {
 //   const tokens = config.tokens ?? engine.globals;

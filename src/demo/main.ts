@@ -2,15 +2,24 @@ import { create } from '../index';
 
 const style = create({
     colors: {
-        base: '#ffffff',
+        base: 'red',
     }
 });
 
-style.globals.colors.base;
+style.setStyle();
 
-const text = style.text({
+const block = style.block({
+    color: 'base',
 });
 
-style.text({}, {
-    extends: text,
-})
+const text = style.text({
+    color: 'primary-muted',
+});
+
+const div = document.createElement('div');
+div.classList.add(block);
+div.innerHTML = `
+    <span class="${text}">Hello, World!</span>
+`;
+
+document.body.appendChild(div);

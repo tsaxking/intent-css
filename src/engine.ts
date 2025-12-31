@@ -1,8 +1,12 @@
 import { Component } from './components/component.js';
-import { type Globals, type PartialGlobals, GLOBALS } from './globals.js';
+import { type Globals, type PartialGlobals, defaultConfig, GLOBALS } from './globals.js';
 import { type IntentTypeMap, type IntentConfig } from './intent.js';
 import { INTENT_CSS_VERSION } from './globals.js';
-import { type BaseCssConfig } from './base.js';
+import { genBaseCss, type BaseCssConfig } from './base.js';
+import { ColorVariant, generateColorVariant, validatePallette } from './utils/color.js';
+import { genRootCss } from './root.js';
+import { BlockComponent } from './components/block.js';
+import { TextComponent } from './components/text.js';
 
 type BaseGlobals = typeof GLOBALS;
 
@@ -22,6 +26,7 @@ export type IntentEngineConfig<G extends Globals> = {
     globals: G;
     defaults?: Partial<IntentTypeMap<G>>;
     declaration?: Partial<BaseCssConfig<G>>;
+    prefix?: string;
 }
 
 let exists: IntentEngine<any> | null = null;
@@ -34,37 +39,95 @@ export class IntentEngine<G extends Globals = Globals> {
         exists = this;
     }
 
-    get globals() {
-        return this.config.globals;
+    get prefix () {
+        return this.config.prefix || defaultConfig.prefix;
+    }
+
+    get defaults(): IntentTypeMap<G> {
+        return Object.entries(this.config.defaults || {}).reduce((acc, [key, value]) => {
+            acc[key as keyof IntentTypeMap<G>] = {
+                ...(defaultConfig.intents as any)[key],
+                ...this.config.defaults?.[key as keyof IntentTypeMap<G>],
+                ...value,
+            };
+            return acc;
+        }, {} as IntentTypeMap<G>);
+    }
+
+    getStyle(): HTMLStyleElement {
+        const s = document.querySelector('style[data-intent-css]');
+        if (s) {
+            return s as HTMLStyleElement;
+        }
+        const style = document.createElement('style');
+        style.setAttribute('data-intent-css', 'true');
+        document.head.appendChild(style);
+        return style;
+    }
+
+    init() {
+        return genRootCss(this, {
+            prefix: this.config.prefix,
+        });
+    }
+
+    setStyle() {
+        const style = this.getStyle();
+        const root = this.init();
+        const base = genBaseCss(this);
+        style.innerHTML = root + '\n' + base;
+    }
+
+    getColors(): {
+        [key in keyof G['colors']]: ColorVariant;
+    } {
+        const colors = this.config.globals.colors;
+        const result = validatePallette(colors);
+        if (!result.isValid) {
+            console.warn('Warning: Some issues were found in your color pallette:', result.warnings);
+        }
+
+        const generated: {
+            [key in keyof G['colors']]: ColorVariant;
+        } = Object.entries(colors).reduce((acc, [key, value]) => {
+            acc[key as keyof G['colors']] =  generateColorVariant(value);
+            return acc;
+        }, {} as {
+            [key in keyof G['colors']]: ColorVariant;
+        });
+        return generated;
     }
 
     private readonly components = new Map<string, Component<G, keyof IntentTypeMap<G>>>();
 
     text(intent?: IntentTypeMap<G>['text'], config?: IntentConfig<G, 'text'>) {
-        const component = new Component<G, 'text'>({
+        const component = new TextComponent(this as any, {
             type: 'text',
             version: INTENT_CSS_VERSION,
             intent: {
-                border: 'none',
-                color: 'foreground',
-                size: 'md',
-                weight: 'normal',
-                highlight: 'none',
-                margin: 'none',
-                padding: 'none',
-                radius: 'none',
-                transition: 'none',
                 ...intent,
             },
             raw: config?.raw || {},
             extends: config?.extends,
         });
-        // I don't care if we replace it or not, the class id will be the same for the same intent
+        component.init();
         this.components.set(component.class, component);
         return component.class;
     }
 
-    // block(intent?: IntentTypeMap<G>['block'], config?: IntentConfig<G, 'block'>) {}
+    block(intent?: IntentTypeMap<G>['block'], config?: IntentConfig<G, 'block'>) {
+        const component = new BlockComponent(this as any, {
+            type: 'block',
+            version: INTENT_CSS_VERSION,
+            intent: {
+                ...intent,
+            },
+            raw: config?.raw || {},
+            extends: config?.extends,
+        });
+        component.init()
+        this.components.set(component.class, component);
+        return component.class;
+    }
 
-    // init() {}
 }

@@ -1,11 +1,13 @@
+import { IntentTypeMap } from "./intent";
+
 export type Global = Record<string, string>;
 export type CoreSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
-export type CoreColors = 'primary' | 'secondary' | 'background' | 'foreground';
+export type CoreColors = 'primary' | 'secondary' | 'background' | 'foreground' | 'text';
 export type CoreSpacing = '0' | '1' | '2' | '3' | '4' | '5';
 export type CoreRadii = 'none' | 'sm' | 'md' | 'lg' | 'full';
 export type CoreLayers = 'base' | 'overlay' | 'modal' | 'popover' | 'tooltip';
-export type CoreFontWeights = 'light' | 'regular' | 'medium' | 'bold' | 'black';
-export type CoreBorders = 'thin' | 'light' | 'regular' | 'bold' | 'heavy';
+export type CoreFontWeights = 'light' | 'normal' | 'medium' | 'bold' | 'black';
+export type CoreBorders = 'none' | 'light' | 'normal' | 'bold' | 'heavy';
 export type CoreTransitions = 'fast' | 'normal' | 'slow';
 
 export type GlobalBreakpoint = Record<CoreSizes, string>;
@@ -17,6 +19,8 @@ export type GlobalLayers = Record<CoreLayers, string>;
 export type GlobalFontWeights = Record<CoreFontWeights, string>;
 export type GlobalBorders = Record<CoreBorders, string>;
 export type GlobalTransitions = Record<CoreTransitions, string>;
+
+export type Key<T extends Record<string, any>> = Extract<keyof T, string>;
 
 export type Globals<
     BP extends GlobalBreakpoint = Global & GlobalBreakpoint, 
@@ -74,6 +78,7 @@ export const GLOBALS: Globals<{
     secondary: string;
     background: string;
     foreground: string;
+    text: string;
 }, {
     '0': string;
     '1': string;
@@ -102,14 +107,15 @@ export const GLOBALS: Globals<{
     tooltip: string;
 }, {
     light: string;
-    regular: string;
+    normal: string;
     medium: string;
     bold: string;
     black: string;
 }, {
+    none: string;
     thin: string;
     light: string;
-    regular: string;
+    normal: string;
     bold: string;
     heavy: string;
 }, {
@@ -130,6 +136,7 @@ export const GLOBALS: Globals<{
         secondary: '#1c1c1e',
         background: '#ffffff',
         foreground: '#000000',
+        text: '#333333',
     },
     spacing: {
         '0': '0rem',
@@ -163,15 +170,16 @@ export const GLOBALS: Globals<{
     },
     fontWeights: {
         light: '300',
-        regular: '400',
+        normal: '400',
         medium: '500',
         bold: '700',
         black: '900',
     },
     borders: {
+        none: 'none',
         thin: '1px solid',
         light: '2px solid',
-        regular: '4px solid',
+        normal: '4px solid',
         bold: '8px solid',
         heavy: '12px solid',
     },
@@ -183,3 +191,27 @@ export const GLOBALS: Globals<{
 } as const;
 
 export const INTENT_CSS_VERSION = '1.0.0';
+
+export type DefaultConfig<G extends Globals> = {
+    prefix: string;
+    intents: IntentTypeMap<G>
+};
+
+export const defaultConfig: DefaultConfig<typeof GLOBALS> = {
+    prefix: 'intent',
+    intents: {
+        text: {
+            color: 'text',
+            weight: 'normal',
+        },
+        block: {
+            flow: 'none',
+            position: 'normal',
+            color: 'background',
+            radius: 'none',
+            border: 'none',
+            padding: '1',
+            margin: '0',
+        }
+    }
+};

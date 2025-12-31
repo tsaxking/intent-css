@@ -10,5 +10,7 @@ export const create = <G extends PartialGlobals = {}>(globals?: G) => {
     }
   }
 
-  return new IntentEngine<MergeGlobals<G>>(merged);
+  return new IntentEngine<MergeGlobals<G>>({
+    globals: merged,
+  });
 }

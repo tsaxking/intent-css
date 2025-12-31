@@ -31,4 +31,9 @@ export default defineConfig({
   },
   root: isLibBuild ? __dirname : './src/demo',
   publicDir: isLibBuild ? false : resolve(__dirname, 'src/demo/public'),
+  server: {
+    port: 10000,
+    host: '0.0.0.0',
+    allowedHosts: ['dev.tsaxking.com']
+  }
 });
