@@ -1,42 +1,29 @@
 {
-  "name": "intent-css",
-  "version": "0.0.1",
-  "description": "A styling package written in TypeScript",
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && LIB_BUILD=true vite build",
-    "build:demo": "vite build",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "preview": "vite preview"
-  },
-  "keywords": [
-    "css",
-    "styling",
-    "typescript"
-  ],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^20.10.6",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.10",
-    "vite-plugin-dts": "^3.7.0",
-    "vitest": "^1.1.0"
-  },
-  "packageManager": "pnpm@8.0.0"
+	"scripts": {
+		"build": "tsc && tsc -p tsconfig.commonjs.json && node ./scripts/post-build.js",
+		"install": "pnpm build",
+		"test": "vitest"
+	},
+	"devDependencies": {
+		"@types/node": "^25.0.3",
+		"@types/tinycolor2": "^1.4.6",
+		"jsdom": "^27.4.0",
+		"typescript": "^5.9.3",
+		"vite": "^7.3.0",
+		"vite-plugin-dts": "^4.5.4",
+		"vitest": "^4.0.16"
+	},
+	"dependencies": {
+		"@types/css-tree": "^2.3.11",
+		"css-tree": "^3.1.0",
+		"tinycolor2": "^1.6.0",
+		"ts-utils": "github:tsaxking/global-ts-utilities#v1.0.9",
+		"colors": "github:tsaxking/colors#v2.0.0"
+	},
+	"exports": {
+		".": {
+			"import": "./lib/esm/index.js",
+			"require": "./lib/cjs/index.js"
+		}
+	}
 }

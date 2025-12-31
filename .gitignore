@@ -39,4 +39,5 @@ pnpm-debug.log*
 # Lock files (keep package.json but ignore locks for now)
 package-lock.json
 pnpm-lock.yaml
+pnpm-workspace.yaml
 
